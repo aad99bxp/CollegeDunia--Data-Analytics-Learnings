@@ -1,0 +1,27 @@
+> ADOPTION OF USERS IN Monopoly Go Example:
+
+
+SELECT 
+    user_id, 
+    COUNT(DISTINCT(extra::jsonb->>'goal_title')) AS completed,
+    round((COUNT(DISTINCT(extra::jsonb->>'goal_title'))::decimal / 24),2) * 100 AS completion_percentage
+FROM user_wallet_history
+WHERE transaction_type = 'CREDIT'
+  AND type = 'ELITE_OFFER_REWARD'
+  AND extra::jsonb->>'name' = 'Monopoly Go!' 
+  AND user_id IN (
+      1916556, 2000547, 1985416, 1985746, 1804931, 2012897, 91331, 1830245, 
+      2134226, 2146910, 2037767, 1904163, 341362, 1982489, 2120145, 2117326, 
+      2143352, 1353452, 2061504, 1201539, 2035438, 1943775, 1766845, 1641803, 
+      1971433, 2050708, 1230126, 2004200, 1967493, 129325, 2083228, 1988192, 
+      2120145, 2125027
+  )
+GROUP BY user_id;
+
+
+> Distinct Goal Titles in any Elite Offer:
+
+select count(distinct(extra::jsonb->>'goal_title')) from user_wallet_history 
+WHERE transaction_type = 'CREDIT'
+  AND type = 'ELITE_OFFER_REWARD'
+and extra::jsonb->>'name' = 'Monopoly Go!'
